@@ -1,24 +1,30 @@
 from flask import Flask, redirect,render_template
+from flask_bootstrap import Bootstrap4
+from formularios.forms import RegisterForm,LoginForm
+from dotenv import load_dotenv
 
-
+load_dotenv()
+import os
 
 
 
 
 app=Flask(__name__)
+Bootstrap4(app)
+app.config['SECRET_KEY']=os.getenv('SECRET_KEY')
 
 
 
 @app.route('/')
 def inicio():
-    return "soy la tuta raiz"
+    return render_template('Home.html')
 
 
 @app.route('/register')
 def mostrar_register():
-    return "soy la ruta register"
-
-    # return render_template('Regsiter.html')
+    form=RegisterForm()
+    
+    return render_template('Register.html',form=form)
 
 
 
@@ -26,8 +32,9 @@ def mostrar_register():
 
 @app.route('/login')
 def mostrar_login():
-    return "soy la ruta login "
-    # return render_template('Login.html')
+    form=LoginForm()
+    
+    return render_template('Login.html',form=form)
 
 
 @app.errorhandler(404)
@@ -45,5 +52,5 @@ def NotFound(mensaje):
 
 
 if __name__=='__main__':
-    app.run(debug=True)
+    app.run(debug=True,host='0.0.0.0')
 
